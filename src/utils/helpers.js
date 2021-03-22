@@ -15,8 +15,6 @@ export const getImageUrl = (imageName, date) => {
 export const addDay = day => {
   const date = new Date(day);
   date.setDate(date.getDate() + 1);
-
-  console.log(date);
   return date;
 };
 
