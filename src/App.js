@@ -1,10 +1,24 @@
-import React from 'react';
-import { ChakraProvider, Box, Text, theme } from '@chakra-ui/react';
+import { useState, useEffect } from 'react';
 
+// components
+import { ChakraProvider, Box, Text, theme } from '@chakra-ui/react';
 import { BirthdayPicker } from './components';
 
+// utils
+import { getImagesForDay } from './utils/api';
+import { getImageUrl } from './utils/helpers';
+
 function App() {
-  const [selectedDay, setSelectedDay] = React.useState(undefined);
+  const [selectedDay, setSelectedDay] = useState(undefined);
+  const [imageUrls, setImageUrls] = useState([]);
+
+  useEffect(() => {
+    if (selectedDay) {
+      getImagesForDay(selectedDay).then(data => {
+        setImageUrls(data.map(item => getImageUrl(item.image, selectedDay)));
+      });
+    }
+  }, [selectedDay]);
 
   const handleDayChange = (day: Date) => {
     setSelectedDay(day);
