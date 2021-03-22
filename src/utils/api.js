@@ -1,7 +1,7 @@
 import { NASA_API_URL } from '../constants';
-import { formatDayForAPI, addDay } from './helpers';
+import { formatDay, addDay } from './helpers';
 
-const URL = day => `${NASA_API_URL}/api/natural/date/${formatDayForAPI(day)}`;
+const URL = day => `${NASA_API_URL}/api/natural/date/${formatDay(day)}`;
 
 export const getImagesForDay = async day => {
   const response = await fetch(URL(day));

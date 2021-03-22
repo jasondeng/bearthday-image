@@ -13,7 +13,7 @@ import { BirthdayPicker, ImageSlider } from './components';
 
 // utils
 import { getImagesForClosestDay, getImagesForDay } from './utils/api';
-import { getImageUrl } from './utils/helpers';
+import { getImageUrl, getLastBirthday, formatDay } from './utils/helpers';
 
 function App() {
   const [selectedDay, setSelectedDay] = useState(undefined);
@@ -26,20 +26,24 @@ function App() {
   };
 
   const setImageUrlsFromData = data => {
-    setImageUrls(data.map(item => getImageUrl(item.image, selectedDay)));
+    setImageUrls(
+      data.map(item => getImageUrl(item.image, getLastBirthday(selectedDay)))
+    );
   };
 
   const handleSubmit = () => {
     if (selectedDay) {
       setIsLoading(true);
 
-      getImagesForDay(selectedDay).then(data => {
+      const lastBirthday = getLastBirthday(selectedDay);
+
+      getImagesForDay(lastBirthday).then(data => {
         if (data.length > 0) {
           setIsBearthday(true);
           setImageUrlsFromData(data);
         } else {
           setIsBearthday(false);
-          getImagesForClosestDay(selectedDay).then(data => {
+          getImagesForClosestDay(lastBirthday).then(data => {
             setImageUrlsFromData(data);
           });
         }
@@ -75,7 +79,9 @@ function App() {
         <Text>
           {typeof isBearthday === 'boolean'
             ? isBearthday
-              ? "Here's your bearthday!"
+              ? `Here's your bearthday on ${formatDay(
+                  getLastBirthday(selectedDay)
+                )}!!`
               : "There's no imagine for your bearthday! :( Hold on while we look for the closest image to it!"
             : null}
         </Text>
