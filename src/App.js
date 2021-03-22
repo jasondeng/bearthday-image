@@ -1,25 +1,50 @@
 import { useState } from 'react';
 
 // components
-import { ChakraProvider, Box, Text, theme, Button } from '@chakra-ui/react';
+import {
+  ChakraProvider,
+  Box,
+  Text,
+  theme,
+  Button,
+  Spinner,
+} from '@chakra-ui/react';
 import { BirthdayPicker, ImageSlider } from './components';
 
 // utils
-import { getImagesForDayOrClosestDay } from './utils/api';
+import { getImagesForClosestDay, getImagesForDay } from './utils/api';
 import { getImageUrl } from './utils/helpers';
 
 function App() {
   const [selectedDay, setSelectedDay] = useState(undefined);
   const [imageUrls, setImageUrls] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [isBearthday, setIsBearthday] = useState(undefined);
 
-  const handleDayChange = (day: Date) => {
+  const handleDayChange = day => {
     setSelectedDay(day);
+  };
+
+  const setImageUrlsFromData = data => {
+    setImageUrls(data.map(item => getImageUrl(item.image, selectedDay)));
   };
 
   const handleSubmit = () => {
     if (selectedDay) {
-      getImagesForDayOrClosestDay(selectedDay).then(data => {
-        setImageUrls(data.map(item => getImageUrl(item.image, selectedDay)));
+      setIsLoading(true);
+
+      getImagesForDay(selectedDay).then(data => {
+        if (data.length > 0) {
+          setIsBearthday(true);
+          setImageUrlsFromData(data);
+        } else {
+          setIsBearthday(false);
+          getImagesForClosestDay(selectedDay).then(data => {
+            setImageUrlsFromData(data);
+          });
+        }
+
+        setIsLoading(false);
       });
     }
   };
@@ -33,14 +58,27 @@ function App() {
         justifyItems="center"
       >
         <Text>
-          What's your birthday? Lets see what the earth looked like on your last
+          When's your birthday? Lets see what the earth looked like on your last
           birthday!
         </Text>
         <BirthdayPicker handleDayChange={handleDayChange} />
         <Button colorScheme="teal" size="sm" onClick={handleSubmit}>
           Submit
         </Button>
-        {imageUrls.length > 0 && <ImageSlider images={imageUrls} />}
+        <Box>
+          {isLoading ? (
+            <Spinner size="xl" />
+          ) : imageUrls.length > 0 ? (
+            <ImageSlider images={imageUrls} />
+          ) : null}
+        </Box>
+        <Text>
+          {typeof isBearthday === 'boolean'
+            ? isBearthday
+              ? "Here's your bearthday!"
+              : "There's no imagine for your bearthday! :( Hold on while we look for the closest image to it!"
+            : null}
+        </Text>
       </Box>
     </ChakraProvider>
   );
