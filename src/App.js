@@ -1,7 +1,7 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 
 // components
-import { ChakraProvider, Box, Text, theme } from '@chakra-ui/react';
+import { ChakraProvider, Box, Text, theme, Button } from '@chakra-ui/react';
 import { BirthdayPicker, ImageSlider } from './components';
 
 // utils
@@ -12,16 +12,16 @@ function App() {
   const [selectedDay, setSelectedDay] = useState(undefined);
   const [imageUrls, setImageUrls] = useState([]);
 
-  useEffect(() => {
+  const handleDayChange = (day: Date) => {
+    setSelectedDay(day);
+  };
+
+  const handleSubmit = () => {
     if (selectedDay) {
       getImagesForDayOrClosestDay(selectedDay).then(data => {
         setImageUrls(data.map(item => getImageUrl(item.image, selectedDay)));
       });
     }
-  }, [selectedDay]);
-
-  const handleDayChange = (day: Date) => {
-    setSelectedDay(day);
   };
 
   return (
@@ -37,6 +37,9 @@ function App() {
           birthday!
         </Text>
         <BirthdayPicker handleDayChange={handleDayChange} />
+        <Button colorScheme="teal" size="sm" onClick={handleSubmit}>
+          Submit
+        </Button>
         {imageUrls.length > 0 && <ImageSlider images={imageUrls} />}
       </Box>
     </ChakraProvider>
