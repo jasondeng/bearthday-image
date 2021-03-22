@@ -5,7 +5,7 @@ import { ChakraProvider, Box, Text, theme } from '@chakra-ui/react';
 import { BirthdayPicker, ImageSlider } from './components';
 
 // utils
-import { getImagesForDay } from './utils/api';
+import { getImagesForDayOrClosestDay } from './utils/api';
 import { getImageUrl } from './utils/helpers';
 
 function App() {
@@ -14,7 +14,7 @@ function App() {
 
   useEffect(() => {
     if (selectedDay) {
-      getImagesForDay(selectedDay).then(data => {
+      getImagesForDayOrClosestDay(selectedDay).then(data => {
         setImageUrls(data.map(item => getImageUrl(item.image, selectedDay)));
       });
     }
