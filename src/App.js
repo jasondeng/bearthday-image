@@ -1,13 +1,23 @@
 import React from 'react';
-import { ChakraProvider, Box, Text, Grid, theme } from '@chakra-ui/react';
+import { ChakraProvider, Box, Text, theme } from '@chakra-ui/react';
+
+import { BirthdayPicker } from './components';
 
 function App() {
+  const [selectedDay, setSelectedDay] = React.useState(undefined);
+
+  const handleDayChange = (day: Date) => {
+    setSelectedDay(day);
+  };
+
   return (
     <ChakraProvider theme={theme}>
       <Box textAlign="center" fontSize="xl">
-        <Grid minH="100vh" p={3}>
-          <Text>Hello World</Text>
-        </Grid>
+        <Text>
+          What's your birthday? Lets see what the earth looked like on your last
+          birthday!
+        </Text>
+        <BirthdayPicker handleDayChange={handleDayChange} />
       </Box>
     </ChakraProvider>
   );
