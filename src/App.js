@@ -77,7 +77,7 @@ function App() {
           ) : null}
         </Box>
         <Text>
-          {typeof isBearthday === 'boolean'
+          {typeof isBearthday === 'boolean' && !isLoading
             ? isBearthday
               ? `Here's your bearthday on ${formatDay(
                   getLastBirthday(selectedDay)
