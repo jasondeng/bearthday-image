@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 
 // components
 import { ChakraProvider, Box, Text, theme } from '@chakra-ui/react';
-import { BirthdayPicker } from './components';
+import { BirthdayPicker, ImageSlider } from './components';
 
 // utils
 import { getImagesForDay } from './utils/api';
@@ -26,12 +26,18 @@ function App() {
 
   return (
     <ChakraProvider theme={theme}>
-      <Box textAlign="center" fontSize="xl">
+      <Box
+        textAlign="center"
+        fontSize="xl"
+        alignItems="center"
+        justifyItems="center"
+      >
         <Text>
           What's your birthday? Lets see what the earth looked like on your last
           birthday!
         </Text>
         <BirthdayPicker handleDayChange={handleDayChange} />
+        {imageUrls.length > 0 && <ImageSlider images={imageUrls} />}
       </Box>
     </ChakraProvider>
   );
