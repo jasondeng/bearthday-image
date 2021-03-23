@@ -1,3 +1,4 @@
+
 # bearthday-image
 
 This is a small sample app that will show you what the earth looked like on your previous birthday! (hence bearthday). Enter your birthday in the date picker and the UI will fetch some pictures from the [NASA API](https://epic.gsfc.nasa.gov/about/api)
@@ -13,6 +14,3 @@ This project was created with `create-react-app` and uses JavaScript and [https:
 
 Runs the app in the development mode.<br>
 Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
-
-The page will reload if you make edits.<br>
-You will also see any lint errors in the console.
